@@ -1,11 +1,13 @@
 import React from 'react';
+import {View, Text} from 'react-native';
 import {connect} from 'react-redux';
 import {emailChanged, passwordChanged, loginUser} from '../actions';
 import {
     Card,
     CardSection,
     Input,
-    Button
+    Button,
+    Spinner
 } from "./common";
 
 class LoginForm extends React.Component{
@@ -21,6 +23,30 @@ class LoginForm extends React.Component{
         const {email, password} = this.props;
 
         this.props.loginUser({email, password})
+    }
+
+    renderError() {
+        if (this.props.error) {
+            return(
+                <View style={{backgroundColor: 'white'}}>
+                    <Text style={style.errorText}>
+                        {this.props.error}
+                    </Text>
+                </View>
+            );
+        }
+    }
+
+    renderButton() {
+        if (this.props.loading) {
+            return(
+                <Spinner size="large"/>
+            )
+        }
+
+        return(
+            <Button onPress={this.onButtonPress.bind(this)}>Login</Button>
+        )
     }
 
     render() {
@@ -45,8 +71,10 @@ class LoginForm extends React.Component{
                     />
                 </CardSection>
 
+                {this.renderError()}
+
                 <CardSection>
-                    <Button onPress={this.onButtonPress.bind(this)}>Login</Button>
+                    {this.renderButton()}
                 </CardSection>
             </Card>
         );
@@ -56,7 +84,17 @@ class LoginForm extends React.Component{
 const mapStateToProps = state => {
     return {
         email: state.auth.email,
-        password: state.auth.password
+        password: state.auth.password,
+        error: state.auth.error,
+        loading: state.auth.loading
+    }
+};
+
+const style = {
+    errorText: {
+        fontSize: 20,
+        alignSelf: 'center',
+        color: 'red'
     }
 };
 
