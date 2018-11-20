@@ -4,7 +4,7 @@ import LoginForm from './components/LoginForm';
 import EmployeeList from './components/EmployeeList';
 import EmployeeCreate from './components/EmployeeCreate';
 
-export default RouterComponent = () => {
+const RouterComponent = () => {
     return (
         <Router>
             <Scene key="root" hideNavBar>
@@ -19,3 +19,5 @@ export default RouterComponent = () => {
         </Router>
     )
 };
+
+export default RouterComponent();
